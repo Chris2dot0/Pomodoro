@@ -9,9 +9,11 @@ const resetButton = document.getElementById('reset');
 const modeText = document.getElementById('mode-text');
 const toggleButton = document.getElementById('toggle-mode');
 const toggleIcon = toggleButton.querySelector('i');
+const addTimeButton = document.getElementById('add-time');
 
 const WORK_TIME = 25 * 60; // 25 minutes in seconds
 const BREAK_TIME = 5 * 60; // 5 minutes in seconds
+const EXTRA_TIME = 5 * 60; // 5 minutes in seconds
 
 function updateDisplay(timeLeft) {
     const minutes = Math.floor(timeLeft / 60);
@@ -23,6 +25,11 @@ function updateDisplay(timeLeft) {
     // Update browser tab title
     const mode = isWorkTime ? 'Work' : 'Break';
     document.title = `${timeString} - ${mode} | Pomodoro Timer`;
+}
+
+function addFiveMinutes() {
+    timeLeft += EXTRA_TIME;
+    updateDisplay(timeLeft);
 }
 
 function switchMode() {
@@ -45,6 +52,7 @@ function startTimer() {
     }
 
     startButton.textContent = 'Pause';
+    addTimeButton.classList.remove('hidden');
     
     timerId = setInterval(() => {
         timeLeft--;
@@ -54,6 +62,7 @@ function startTimer() {
             clearInterval(timerId);
             timerId = null;
             startButton.textContent = 'Start';
+            addTimeButton.classList.add('hidden');
             switchMode();
             alert(isWorkTime ? 'Break time is over! Time to work!' : 'Work time is over! Take a break!');
         }
@@ -64,6 +73,7 @@ function pauseTimer() {
     clearInterval(timerId);
     timerId = null;
     startButton.textContent = 'Start';
+    addTimeButton.classList.add('hidden');
 }
 
 function resetTimer() {
@@ -73,8 +83,9 @@ function resetTimer() {
     timeLeft = WORK_TIME;
     startButton.textContent = 'Start';
     modeText.textContent = 'Work Time';
+    addTimeButton.classList.add('hidden');
     updateDisplay(timeLeft);
-    document.title = 'Pomodoro Timer'; // Reset title when timer is reset
+    document.title = 'Pomodoro Timer';
 }
 
 startButton.addEventListener('click', () => {
@@ -93,6 +104,8 @@ toggleButton.addEventListener('click', () => {
     }
     switchMode();
 });
+
+addTimeButton.addEventListener('click', addFiveMinutes);
 
 // Initialize display
 timeLeft = WORK_TIME;

@@ -155,4 +155,18 @@ body.break-mode .mode-button {
     .controls button {
         width: 100%;
     }
+}
+
+.hidden {
+    display: none;
+}
+
+#add-time {
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
+#add-time:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
 } 
