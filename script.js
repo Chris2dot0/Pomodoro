@@ -7,7 +7,8 @@ const secondsDisplay = document.getElementById('seconds');
 const startButton = document.getElementById('start');
 const resetButton = document.getElementById('reset');
 const modeText = document.getElementById('mode-text');
-const toggleSwitch = document.getElementById('toggle-mode');
+const toggleButton = document.getElementById('toggle-mode');
+const toggleIcon = toggleButton.querySelector('i');
 
 const WORK_TIME = 25 * 60; // 25 minutes in seconds
 const BREAK_TIME = 5 * 60; // 5 minutes in seconds
@@ -29,6 +30,10 @@ function switchMode() {
     timeLeft = isWorkTime ? WORK_TIME : BREAK_TIME;
     modeText.textContent = isWorkTime ? 'Work Time' : 'Break Time';
     document.body.classList.toggle('break-mode', !isWorkTime);
+    
+    // Update icon
+    toggleIcon.className = isWorkTime ? 'fas fa-sun' : 'fas fa-moon';
+    
     updateDisplay(timeLeft);
 }
 
@@ -82,7 +87,7 @@ startButton.addEventListener('click', () => {
 
 resetButton.addEventListener('click', resetTimer);
 
-toggleSwitch.addEventListener('change', () => {
+toggleButton.addEventListener('click', () => {
     if (timerId !== null) {
         pauseTimer();
     }
