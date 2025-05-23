@@ -1,6 +1,7 @@
 let timeLeft;
 let timerId = null;
 let isWorkTime = true;
+let currentFocusTask = '';
 
 const minutesDisplay = document.getElementById('minutes');
 const secondsDisplay = document.getElementById('seconds');
@@ -10,6 +11,7 @@ const modeText = document.getElementById('mode-text');
 const toggleButton = document.getElementById('toggle-mode');
 const toggleIcon = toggleButton.querySelector('i');
 const addTimeButton = document.getElementById('add-time');
+const focusTaskDisplay = document.getElementById('focus-task');
 
 const WORK_TIME = 25 * 60; // 25 minutes in seconds
 const BREAK_TIME = 5 * 60; // 5 minutes in seconds
@@ -51,6 +53,18 @@ function startTimer() {
         timeLeft = WORK_TIME;
     }
 
+    // Only prompt for focus task during work time
+    if (isWorkTime) {
+        const task = prompt('What are you focusing on?');
+        if (task) {
+            currentFocusTask = task;
+            focusTaskDisplay.textContent = `Focus: ${task}`;
+            focusTaskDisplay.classList.remove('hidden');
+        }
+    } else {
+        focusTaskDisplay.classList.add('hidden');
+    }
+
     startButton.textContent = 'Pause';
     addTimeButton.classList.remove('hidden');
     
@@ -84,6 +98,8 @@ function resetTimer() {
     startButton.textContent = 'Start';
     modeText.textContent = 'Work Time';
     addTimeButton.classList.add('hidden');
+    focusTaskDisplay.classList.add('hidden');
+    currentFocusTask = '';
     updateDisplay(timeLeft);
     document.title = 'Pomodoro Timer';
 }
